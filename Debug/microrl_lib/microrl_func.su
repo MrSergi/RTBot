@@ -1,0 +1,13 @@
+microrl_func.c:256:9:complet	32	static
+microrl_func.c:89:5:fc_printf	16	static
+microrl_func.c:106:5:consoleExecute	16	static
+microrl_func.c:130:5:execute	0	static
+microrl_func.c:162:6:consoleInit	8	static
+microrl_func.c:168:6:microrl_terminalProcess	16	static
+microrl_func.c:380:6:ConsoleInput	24	static
+microrl_func.c:404:6:microrl_sendString	8	static
+microrl_func.c:190:6:microrl_printString	0	static
+microrl_func.c:195:6:microrl_printStringWithEndl	8	static
+microrl_func.c:201:6:microrl_printEndl	0	static
+microrl_func.c:82:6:print	0	static
+microrl_func.c:410:6:microrl_terminalInit	8	static
