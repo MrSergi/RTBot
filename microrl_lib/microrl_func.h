@@ -3,13 +3,13 @@
 
 #include <stdint.h>
 
-#define microrlNUM_OF_TERMINAL_FUNC	10
+//#define microrlNUM_OF_TERMINAL_FUNC	10
 
-typedef struct {
-	const char * name;
-	const char * help;
-	int (*func)(int, const char* const*);
-} terminalFunc_t;
+//typedef struct {
+//	const char * name;
+//	const char * help;
+//	int (*func)(int, const char* const*);
+//} terminalFunc_t;
 
 void microrl_terminalInit();
 void microrl_terminalProcess();

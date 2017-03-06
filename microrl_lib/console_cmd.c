@@ -24,7 +24,7 @@ void cmdHelp(int argc, const char * const * argv)
 //	microrl_printStringWithEndl("RTBot");
 	fc_printf("test help");
 
-	microrl_printEndl();
+//	microrl_printEndl();
 
 
 //	fc_printf(dev, "Config command:\r\n");

@@ -61,16 +61,16 @@ static const console_cmd_t cmd_keyworld[] =
 };
 
 // 'engine' subcommand argements
-static const char * engine_key[] =
-{
-	"ignition",
-	"pump",
-	"rpm",
-	"choke",
-	"throttle",
-	"start",
-	"stop",
-};
+//static const char * engine_key[] =
+//{
+//	"ignition",
+//	"pump",
+//	"rpm",
+//	"choke",
+//	"throttle",
+//	"start",
+//	"stop",
+//};
 
 #define _NUM_OF_CMD 	(sizeof(cmd_keyworld) / sizeof(cmd_keyworld[0]))
 #define _NUM_OF_ENGINE_SCMD (sizeof(engine_key) / sizeof(engine_key[0]))
@@ -78,75 +78,21 @@ static const char * engine_key[] =
 // array for comletion
 char * compl_world [_NUM_OF_CMD + 1];
 
-// print to stream callback
-void print (const char * str)
-{
-//	VCP_DataTx((uint8_t *)str, strlen(str));
-	CDC_Transmit_FS((uint8_t *)str, strlen(str));
-	vTaskDelay(1);
-}
-
-int fc_printf(const char * fmt, ...)
-{
-	int n = 0;
-    va_list va;
-
-    va_start(va, fmt);
-
-//	if (dev == CONSOLE_STDOUT)
-		n = vprintf(fmt, va);
-//	if (dev == CONSOLE_MAVLINK)
-//		n = trmPrintf(fmt, va);
-
-    va_end(va);
-
-    return n;
-}
-
-int consoleExecute(int argc, const char * const * argv)
-{
-	int i;
-
-	for(i = 0; i < _NUM_OF_CMD; i++)
-	{
-		if (strcasecmp(argv[0], cmd_keyworld[i].name) == 0)		// Сравниваем имя команды
-		{
-			if (cmd_keyworld[i].console_cmd)
-				cmd_keyworld[i].console_cmd(argc, argv);	// Вызываем функцию команды
-			return 0;
-		}
-	}
-//	HAL_GPIO_WritePin(LED_STAT_GPIO_Port, LED_STAT_Pin, GPIO_PIN_SET);
-//	fc_printf("Unknown command '%s'\n\r", argv[0]);
-//	microrl_printString(const char *str);
-//	microrl_printStringWithEndl("Unknown command");
-	fc_printf("Unknown command '%s'\n\r", argv[0]);
-	return 0;
-}
-
-//*****************************************************************************
-// execute callback for microrl library
-// do what you want here, but don't write to argv!!! read only!!
-int execute (int argc, const char * const * argv)
-{
-	return consoleExecute(argc, argv);
-}
-
-terminalFunc_t terminalFuncArray[microrlNUM_OF_TERMINAL_FUNC];
-int terminalFuncArrayIndex = 0;
+//terminalFunc_t terminalFuncArray[microrlNUM_OF_TERMINAL_FUNC];
+//int terminalFuncArrayIndex = 0;
 
 /* The queue used to store command line. */
 static xQueueHandle xQueueCmdBuffer = NULL;
 microrl_t rl;					// Main terminal object
 microrl_t * prl = &rl;
 
-static void prv_registerBasicTerminalFuncs();
-static int prv_getFuncArrayIndex(const char * name);
-static void prv_printMainHelp();
-static void prv_printTerminalFuncHelp(const char *name);
-void microrl_sendString (const char * str);
+//static void prv_registerBasicTerminalFuncs();
+//static int prv_getFuncArrayIndex(const char * name);
+//static void prv_printMainHelp();
+//static void prv_printTerminalFuncHelp(const char *name);
+//void microrl_sendString (const char * str);
 
-static int prv_execute(int argc, const char * const * argv);
+//static int prv_execute(int argc, const char * const * argv);
 #ifdef _USE_COMPLETE
 static char ** prv_complet (int argc, const char * const * argv);
 #endif
@@ -159,23 +105,6 @@ static void prv_sigint (void);
 //static int prv_TerminalFunc_help(int argc, const char * const * argv);
 //static int prv_TerminalFunc_clear(int argc, const char * const * argv);
 
-void consoleInit(void)
-{
-	xQueueCmdBuffer = xQueueCreate(16, sizeof(char));
-}
-
-
-void microrl_terminalProcess()
-{
-	uint8_t ch;
-
-	if (xQueueCmdBuffer)
-	{
-		xQueueReceive(xQueueCmdBuffer, &ch, portMAX_DELAY);
-		microrl_insert_char (prl, (int)ch);
-	}
-}
-
 //void microrl_registerExecuteFunc(int (*func)(int, const char* const*), const char* name, const char* help)
 //{
 //	assert_param(terminalFuncArrayIndex < microrlNUM_OF_TERMINAL_FUNC);
@@ -187,21 +116,21 @@ void microrl_terminalProcess()
 //	terminalFuncArrayIndex++;
 //}
 
-void microrl_printString(const char *str)
-{
-	microrl_sendString(str);
-}
-
-void microrl_printStringWithEndl(const char *str)
-{
-	microrl_sendString(str);
-	microrl_sendString(ENDL);
-}
-
-void microrl_printEndl()
-{
-	microrl_sendString(ENDL);
-}
+//void microrl_printString(const char *str)
+//{
+//	microrl_sendString(str);
+//}
+//
+//void microrl_printStringWithEndl(const char *str)
+//{
+//	microrl_sendString(str);
+//	microrl_sendString(ENDL);
+//}
+//
+//void microrl_printEndl()
+//{
+//	microrl_sendString(ENDL);
+//}
 
 //static void prv_registerBasicTerminalFuncs()
 //{
@@ -235,22 +164,22 @@ void microrl_printEndl()
 
 #ifdef _USE_COMPLETE
 //TODO simplify this. Quite difficult.
-//static char ** prv_complet (int argc, const char * const * argv)
-//{
-//	static char * compl_world [microrlNUM_OF_TERMINAL_FUNC + 1];
-//	int j = 0, i;
-//	compl_world[0] = NULL;
-//	if (argc == 1)	{
-//		char * bit = (char*)argv [argc-1];
-//		for (i = 0; i < terminalFuncArrayIndex; i++) {
-//			if (strstr(terminalFuncArray[i].name, bit) == terminalFuncArray[i].name) {
-//				compl_world [j++] = (char*)(terminalFuncArray[i].name);
-//			}
-//		}
-//	}
-//	compl_world [j] = NULL;
-//	return compl_world;
-//}
+static char ** prv_complet (int argc, const char * const * argv)
+{
+	static char * compl_world [microrlNUM_OF_TERMINAL_FUNC + 1];
+	int j = 0, i;
+	compl_world[0] = NULL;
+	if (argc == 1)	{
+		char * bit = (char*)argv [argc-1];
+		for (i = 0; i < terminalFuncArrayIndex; i++) {
+			if (strstr(terminalFuncArray[i].name, bit) == terminalFuncArray[i].name) {
+				compl_world [j++] = (char*)(terminalFuncArray[i].name);
+			}
+		}
+	}
+	compl_world [j] = NULL;
+	return compl_world;
+}
 //*****************************************************************************
 // completion callback for microrl library
 char ** complet (int argc, const char * const * argv)
@@ -350,28 +279,10 @@ static void prv_sigint (void)
 //	}
 //}
 
-static int prv_TerminalFunc_clear(int argc, const char * const * argv)
-{
-	microrl_printString ("\033[2J");    // ESC seq for clear entire screen
-	microrl_printString ("\033[H");     // ESC seq for move cursor at left-top corner
-	return 0;
-}
-
-//int consoleExecute(int dev, int argc, const char * const * argv)
+//static int prv_TerminalFunc_clear(int argc, const char * const * argv)
 //{
-//	int i;
-//
-//	for(i = 0; i < _NUM_OF_CMD; i++)
-//	{
-//		if (strcasecmp(argv[0], cmd_keyworld[i].name) == 0)		// Сравниваем имя команды
-//		{
-//			if (cmd_keyworld[i].console_cmd)
-//				cmd_keyworld[i].console_cmd(dev, argc, argv);	// Вызываем функцию команды
-//			return 0;
-//		}
-//	}
-
-//	microrl_printString(dev, "Unknown command '%s'\n\r", argv[0]);
+//	microrl_printString ("\033[2J");    // ESC seq for clear entire screen
+//	microrl_printString ("\033[H");     // ESC seq for move cursor at left-top corner
 //	return 0;
 //}
 
@@ -395,30 +306,93 @@ void ConsoleInput(uint8_t* Buf, uint32_t Len)
 		}
 	}
 
-//	HAL_GPIO_TogglePin(LED_ERR_GPIO_Port, LED_ERR_Pin);
 	/* Now the buffer is empty we can switch context if necessary. */
 	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 // print to stream callback
-void microrl_sendString (const char * str)
+//void microrl_sendString (const char * str)
+//{
+//	CDC_Transmit_FS((uint8_t *)str, strlen(str));
+//	vTaskDelay(1);
+//}
+
+void consoleInit(void)
+{
+	xQueueCmdBuffer = xQueueCreate(16, sizeof(char));
+}
+
+void microrl_terminalProcess()
+{
+	uint8_t ch;
+
+	if (xQueueCmdBuffer)
+	{
+		xQueueReceive(xQueueCmdBuffer, &ch, portMAX_DELAY);
+		microrl_insert_char (prl, (int)ch);
+	}
+}
+
+// print to stream callback
+void print (const char * str)
 {
 	CDC_Transmit_FS((uint8_t *)str, strlen(str));
 	vTaskDelay(1);
+}
+
+int fc_printf(const char * fmt, ...)
+{
+	int n = 0;
+    va_list va;
+
+    va_start(va, fmt);
+
+	n = vprintf(fmt, va);
+
+    va_end(va);
+
+    return n;
+}
+
+int consoleExecute(int argc, const char * const * argv)
+{
+	int i;
+
+	for(i = 0; i < _NUM_OF_CMD; i++)
+	{
+		if (strcasecmp(argv[0], cmd_keyworld[i].name) == 0)		// Сравниваем имя команды
+		{
+			if (cmd_keyworld[i].console_cmd)
+				cmd_keyworld[i].console_cmd(argc, argv);	// Вызываем функцию команды
+			return 0;
+		}
+	}
+
+	fc_printf("Unknown command '%s'\n\r", argv[0]);
+	return 0;
+}
+
+//*****************************************************************************
+// execute callback for microrl library
+// do what you want here, but don't write to argv!!! read only!!
+int execute (int argc, const char * const * argv)
+{
+	return consoleExecute(argc, argv);
 }
 
 void microrl_terminalInit()
 {
 //	prv_registerBasicTerminalFuncs();
 
-	microrl_init(prl, print);
-	microrl_set_execute_callback (prl, execute);
+	microrl_init(prl, print); // вызывается для вывода в терминал
+
+	microrl_set_execute_callback (prl, execute);  // вызывается когда пользователь нажал ENTER
 
 	#ifdef _USE_COMPLETE
-	microrl_set_complete_callback (prl, complet);
+	microrl_set_complete_callback (prl, complet);  // вызывается когда пользователь нажал TAB
 	#endif
 
 	#ifdef _USE_CTLR_C
-//	microrl_set_sigint_callback (prl, prv_sigint);
+	microrl_set_sigint_callback (prl, prv_sigint);
 	#endif
 }
