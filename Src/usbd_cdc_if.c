@@ -42,8 +42,8 @@
 */
 
 /* Includes ------------------------------------------------------------------*/
+#include <console.h>
 #include "usbd_cdc_if.h"
-#include "microrl_func.h"
 /* USER CODE BEGIN INCLUDE */
 /* USER CODE END INCLUDE */
 
@@ -272,32 +272,13 @@ static int8_t CDC_Control_FS  (uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS (uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-//	int i;
-//	for(i=0; i < *Len; i++)
-//	{
-//		UserRxBufferFS[i] = Buf[i];
-//	}
-//  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
 
-//	ConsoleInput(&UserRxBufferFS[0], *Len);
-//
-//	USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &UserRxBufferFS[0]);
-//	USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-
-//	    microrl_printString ((char *)Buf);
 
 		received_data_size = *Len;
 		memcpy(received_data, Buf, received_data_size);
 		receive_total += received_data_size;
 
-//		microrl_printString ((char *)received_data);
-
-		ConsoleInput(received_data, received_data_size);
-
-//		received_data_size = *Len;
-//		memcpy(UserRxBufferFS, Buf, received_data_size);
-//
-//		ConsoleInput(UserRxBufferFS, received_data_size);
+		consoleInput(received_data, received_data_size);
 
 	  /* USER CODE BEGIN 6 */
 	  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
@@ -323,9 +304,8 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
   uint8_t result = USBD_OK;
   /* USER CODE BEGIN 7 */ 
   USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
-  if (hcdc->TxState != 0)
-  {
-	  return USBD_BUSY;
+  if (hcdc->TxState != 0){
+    return USBD_BUSY;
   }
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
   result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);

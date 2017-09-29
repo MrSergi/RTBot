@@ -78,11 +78,13 @@ int _read(int file, char *ptr, int len)
 
 int _write(int file, char *ptr, int len)
 {
-	uint32_t delay;
-
 //	VCP_DataTx((uint8_t *) ptr, len);
+	volatile uint32_t counter = 0;
+
 	CDC_Transmit_FS((uint8_t *) ptr, len);
-//	for(delay=0; delay < 10000; delay++);
+
+	for(counter = 0; counter < 1000000; counter ++) // временная задержка
+		continue;
 
 	return len;
 }
